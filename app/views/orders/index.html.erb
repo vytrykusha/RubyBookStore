@@ -1,0 +1,43 @@
+<div class="py-4">
+  <h1 class="fw-bold mb-4 text-gradient">Мої замовлення</h1>
+  <% if @orders.any? %>
+    <div class="row g-4">
+      <% @orders.each do |order| %>
+        <div class="col-md-6 col-lg-4">
+          <div class="card shadow-sm h-100">
+            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+              <span class="fw-bold">№<%= order.id %></span>
+              <span class="badge <%= order.status&.downcase == 'new' ? 'bg-primary' : order.status&.downcase == 'completed' ? 'bg-success' : order.status&.downcase == 'canceled' ? 'bg-danger' : 'bg-warning text-dark' %>">
+                <%= order.status&.capitalize || 'Невизначено' %>
+              </span>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title mb-3"><i class="bi bi-bag-check me-2 text-success"></i> <%= l(order.created_at, format: :short) %></h5>
+              <ul class="list-group list-group-flush mb-3">
+                <% order.order_items.each do |item| %>
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span><%= item.book.present? ? item.book.title : '[Книга видалена]' %></span>
+                    <span class="badge bg-secondary"><%= item.quantity %> шт</span>
+                    <span class="fw-bold text-success" title="Ціна за одну книгу"><%= number_to_currency(item.unit_price, unit: '$') %> за шт.</span>
+                  </li>
+                <% end %>
+              </ul>
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="fw-bold">Загальна сума:</span>
+                <span class="fs-5 text-primary fw-bold">
+                  <% final_sum = order.total_price.to_f > 0 ? order.total_price : order.calculate_total %>
+                  <%= number_to_currency(final_sum, unit: '$') %>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <div class="mt-4 d-flex justify-content-center">
+      <%= paginate @orders %>
+    </div>
+  <% else %>
+    <div class="alert alert-info">У вас ще немає замовлень. <%= link_to 'Перейти до каталогу', books_path, class: 'btn btn-success ms-2' %></div>
+  <% end %>
+</div>

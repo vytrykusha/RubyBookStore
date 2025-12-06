@@ -1,0 +1,66 @@
+<h1>Оформлення замовлення</h1>
+
+<div class="row">
+  <div class="col-md-7">
+    <%= form_with url: orders_path, method: :post, local: true do |f| %>
+      <div class="mb-3">
+        <%= f.label :name, "Ім'я та прізвище", class: "form-label" %>
+        <%= f.text_field :name, class: "form-control", required: true %>
+      </div>
+      <div class="mb-3">
+        <%= f.label :email, "Email", class: "form-label" %>
+        <%= f.email_field :email, class: "form-control", required: true, value: current_user.email %>
+      </div>
+      <div class="mb-3">
+        <%= f.label :address, "Адреса доставки", class: "form-label" %>
+        <%= f.text_field :address, class: "form-control", required: true %>
+      </div>
+      <div class="mb-3">
+        <%= f.label :phone, "Телефон", class: "form-label" %>
+        <%= f.telephone_field :phone, class: "form-control", required: true %>
+      </div>
+      <div class="mb-3">
+        <%= f.submit "Підтвердити замовлення", class: "btn btn-success" %>
+        <%= link_to "Повернутись до кошика", cart_items_path, class: "btn btn-outline-secondary ms-2" %>
+      </div>
+    <% end %>
+  </div>
+  <div class="col-md-5">
+    <h4>Ваше замовлення</h4>
+    <table class="table table-sm">
+      <thead>
+        <tr>
+          <th>Книга</th>
+          <th>К-сть</th>
+          <th>Ціна</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% total = 0 %>
+        <% @cart_items.each do |item| %>
+          <% price = item.book.price %>
+          <% discount = item.book.discount.to_f %>
+          <% final_price = discount > 0 ? (price * (1 - discount/100)) : price %>
+          <% subtotal = item.quantity * final_price %>
+          <% total += subtotal %>
+          <tr>
+            <td><%= item.book.title %></td>
+            <td><%= item.quantity %></td>
+            <td>
+              <% if discount > 0 %>
+                <span class="text-decoration-line-through text-muted me-1"><%= number_to_currency(price, unit: "$") %></span>
+                <span class="fw-bold text-success"><%= number_to_currency(final_price, unit: "$") %></span>
+                <span class="badge bg-gradient-discount ms-1">-<%= discount.to_i %>%</span>
+              <% else %>
+                <%= number_to_currency(price, unit: "$") %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <div class="text-end">
+      <h5>Сума: <%= number_to_currency(total, unit: "$") %></h5>
+    </div>
+  </div>
+</div>

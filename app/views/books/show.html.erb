@@ -1,0 +1,85 @@
+<div class="row">
+  <div class="col-md-5">
+    <img src="<%= @book.cover %>" class="img-fluid rounded shadow" alt="Обкладинка">
+  </div>
+
+  <div class="col-md-7">
+
+    <div class="d-flex align-items-center gap-3 mb-2">
+      <h2 class="fw-bold mb-0"><%= @book.title %></h2>
+      <% if @book.category.present? %>
+        <span class="badge bg-gradient-category fs-6"><%= @book.category %></span>
+      <% end %>
+      <% if @book.discount.to_f > 0 %>
+        <span class="badge bg-gradient-discount fs-6">-<%= @book.discount.to_i %>%</span>
+      <% end %>
+    </div>
+    <p class="text-muted mb-1">Автор: <%= @book.author %></p>
+    <div class="mb-2">
+      <% if @book.discount.to_f > 0 %>
+        <span class="text-decoration-line-through text-muted me-2">
+          <%= number_to_currency(@book.price, unit: "$") %>
+        </span>
+        <span class="fw-bold text-success fs-4">
+          <%= number_to_currency(@book.price * (1 - @book.discount.to_f/100), unit: "$") %>
+        </span>
+      <% else %>
+        <span class="fw-bold text-success fs-4">
+          <%= number_to_currency(@book.price, unit: "$") %>
+        </span>
+      <% end %>
+    </div>
+    <p><%= @book.description %></p>
+
+    <div class="mt-4 d-flex gap-3 align-items-center">
+      <%= form_with url: cart_items_path, method: :post, local: true, class: "d-inline" do |f| %>
+        <%= hidden_field_tag :book_id, @book.id %>
+        <button type="submit" class="btn btn-lg btn-cart-main-cool px-4 shadow">
+          <i class="bi bi-cart-plus me-2"></i>Додати в кошик
+        </button>
+      <% end %>
+      <%= link_to "Назад", books_path, class: "btn btn-outline-secondary" %>
+    </div>
+  </div>
+</div>
+
+
+<div class="container-fluid mt-5">
+  <h4 class="mb-3">Коментарі</h4>
+  <% if @book.comments.any? %>
+    <div class="list-group mb-4">
+      <% @book.comments.each do |comment| %>
+        <div class="list-group-item">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <strong><%= comment.author.presence || 'Гість' %>:</strong>
+              <%= comment.content %>
+            </div>
+            <div>
+              <%= link_to '✕', [@book, comment], method: :delete, data: { confirm: 'Видалити коментар?' }, class: 'btn btn-sm btn-outline-danger' %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-muted">Коментарів ще немає.</p>
+  <% end %>
+
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Залишити коментар</h5>
+      <%= form_with(model: [@book, @book.comments.build], local: true) do |f| %>
+        <div class="mb-2">
+          <%= f.label :author, 'Ваше імʼя', class: 'form-label' %>
+          <%= f.text_field :author, class: 'form-control', placeholder: 'Імʼя (необовʼязково)' %>
+        </div>
+        <div class="mb-2">
+          <%= f.label :content, 'Коментар', class: 'form-label' %>
+          <%= f.text_area :content, class: 'form-control', rows: 3, required: true %>
+        </div>
+        <%= f.submit 'Додати', class: 'btn btn-primary' %>
+      <% end %>
+    </div>
+  </div>
+</div>

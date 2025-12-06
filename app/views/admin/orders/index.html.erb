@@ -1,0 +1,47 @@
+<h1 class="mb-4">📦 Управління замовленнями</h1>
+
+<table class="table table-hover shadow-sm">
+  <thead class="table-light">
+    <tr>
+      <th>ID</th>
+      <th>Користувач</th>
+      <th>Сума</th>
+      <th>Статус</th>
+      <th>Створено</th>
+      <th>Дії</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @orders.each do |order| %>
+      <tr>
+        <td><%= order.id %></td>
+        <td>
+          <% if order.user.present? %>
+            <%= order.user.email %>
+          <% else %>
+            <span class="text-muted">[Відсутній]</span>
+          <% end %>
+        </td>
+        <td>    
+          <% final_sum = order.total_price.to_f > 0 ? order.total_price : order.calculate_total %>
+          <%= number_to_currency(final_sum, unit: "$") %>
+        </td>
+        <td>
+          <span class="badge 
+            <%= case order.status&.downcase
+                when 'new' then 'bg-primary'
+                when 'processing' then 'bg-warning text-dark'
+                when 'completed' then 'bg-success'
+                when 'canceled' then 'bg-danger'
+                else 'bg-secondary' end %>">
+            <%= order.status&.capitalize || 'Невизначено' %>
+          </span>
+        </td>
+        <td><%= order.created_at.strftime("%d.%m.%Y %H:%M") %></td>
+        <td>
+          <%= link_to "👁 Переглянути", admin_order_path(order), class: "btn btn-sm btn-outline-primary" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

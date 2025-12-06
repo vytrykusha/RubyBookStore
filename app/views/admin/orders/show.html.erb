@@ -1,0 +1,71 @@
+<h1 class="mb-3">Замовлення №<%= @order.id %></h1>
+
+<div class="card shadow p-3 mb-4">
+  <p><strong>Користувач:</strong>
+    <% if @order.user.present? %>
+      <%= @order.user.email %>
+    <% else %>
+      <span class="text-muted">[Відсутній]</span>
+    <% end %>
+  </p>
+  <p><strong>Статус:</strong>
+    <span class="badge 
+      <%= case @order.status&.downcase
+          when 'new' then 'bg-primary'
+          when 'processing' then 'bg-warning text-dark'
+          when 'completed' then 'bg-success'
+          when 'canceled' then 'bg-danger'
+          else 'bg-secondary' end %>">
+      <%= @order.status&.capitalize || 'Невизначено' %>
+    </span>
+  </p>
+  <p><strong>Сума:</strong> 
+    <% final_sum = @order.total_price.to_f > 0 ? @order.total_price : @order.calculate_total %>
+    <%= number_to_currency(final_sum, unit: "$") %>
+  </p>
+  <p><strong>Створено:</strong> <%= @order.created_at.strftime("%d.%m.%Y %H:%M") %></p>
+</div>
+
+<h3 class="mb-3">📚 Товари у замовленні</h3>
+<table class="table table-bordered shadow-sm">
+  <thead class="table-light">
+    <tr>
+      <th>Книга</th>
+      <th>Кількість</th>
+      <th>Ціна за одиницю</th>
+      <th>Сума</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @order.order_items.each do |item| %>
+      <tr>
+        <td>
+          <% if item.book.present? %>
+            <%= item.book.title %>
+          <% else %>
+            <span class="text-muted">[Книга видалена]</span>
+          <% end %>
+        </td>
+        <td><%= item.quantity %> шт</td>
+        <td><%= number_to_currency(item.unit_price, unit: "$") %></td>
+        <td class="fw-bold"><%= number_to_currency(item.unit_price * item.quantity, unit: "$") %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="card p-3 shadow mt-4">
+  <%= form_with(model: [:admin, @order], class: "row g-3") do |f| %>
+    <div class="col-md-6">
+      <%= f.label :status, "Змінити статус", class: "form-label fw-bold" %>
+      <%= f.select :status, ["new", "processing", "completed", "canceled"], selected: @order.status, class: "form-select" %>
+    </div>
+    <div class="col-md-6 d-flex align-items-end">
+      <%= f.submit "Оновити", class: "btn btn-success w-100" %>
+    </div>
+  <% end %>
+</div>
+
+<div class="mt-4">
+  <%= link_to "⬅ Назад до замовлень", admin_orders_path, class: "btn btn-outline-secondary" %>
+</div>

@@ -1,0 +1,97 @@
+<div class="container py-5">
+  <div class="row align-items-center mb-5">
+    <div class="col-lg-7 mb-4 mb-lg-0">
+      <h1 class="display-3 fw-bold mb-3 text-gradient">Ваша книжкова пригода починається тут!</h1>
+      <p class="lead mb-4">Відкрийте для себе унікальні добірки, тематичні колекції, книжкові новинки та ексклюзивні пропозиції. BookStore — це місце, де кожен знайде свою книгу.</p>
+      <div class="d-flex flex-wrap gap-3 mb-4">
+        <a href="<%= books_path %>?sort=new" class="btn btn-lg btn-primary">Новинки</a>
+        <a href="<%= books_path %>?sort=popular" class="btn btn-lg btn-outline-success">Популярне</a>
+        <% Book.distinct.pluck(:category).compact.reject(&:blank?).sort.each do |cat| %>
+          <a href="<%= books_path(category: cat) %>" class="btn btn-lg btn-outline-secondary"><%= cat %></a>
+        <% end %>
+      </div>
+      <p class="mb-0 text-muted">Пориньте у світ читання — <strong>знайдіть свою наступну улюблену книгу!</strong></p>
+    </div>
+    <div class="col-lg-5 text-center">
+      <img src="https://images.adsttc.com/media/images/573c/90c0/e58e/ce1e/1600/0007/large_jpg/Here_is_a_theater_to_unfold_an_outstanding_drama__and_the_characters_are_book_lovers_sitting_on_the_soft_couch_or_standing_beside_the_bookshelves._0004.jpg?1463587001" alt="Book adventure" class="img-fluid rounded shadow-lg" style="max-height: 340px;">
+    </div>
+  </div>
+
+  <div class="row mb-5">
+    <div class="col-md-6 mb-4 mb-md-0">
+      <div class="p-4 bg-light rounded shadow-sm h-100">
+        <h4 class="fw-bold mb-3"><i class="bi bi-stars text-warning me-2"></i> Книжка тижня</h4>
+        <div class="d-flex align-items-center">
+          <img src="https://m.media-amazon.com/images/M/MV5BNjg3NjY5NGUtZTlkNS00NGE2LWJhMTAtZTlkZDgzZDBhOWY1XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" alt="Книжка тижня" class="rounded shadow me-3" style="height: 120px;">
+          <div>
+            <h5 class="mb-1">Пригоди Шерлока Холмса</h5>
+            <p class="mb-2 small text-muted">Артур Конан Дойл</p>
+            <p class="mb-2">Захопливі детективні історії, які не залишать байдужим жодного читача.</p>
+            <a href="<%= book_path(Book.find_by(title: 'Пригоди Шерлока Холмса')) %>" class="btn btn-sm btn-outline-primary">Детальніше</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="p-4 bg-white border rounded shadow-sm h-100">
+        <h4 class="fw-bold mb-3"><i class="bi bi-lightning-charge text-danger me-2"></i> Ексклюзивна пропозиція</h4>
+        <div class="d-flex align-items-center">
+          <img src="https://images-na.ssl-images-amazon.com/images/I/81af+MCATTL.jpg" alt="The Great Gatsby" class="rounded shadow me-3" style="height: 120px;">
+          <div>
+            <h5 class="mb-1">The Great Gatsby</h5>
+            <p class="mb-2 small text-muted">F. Scott Fitzgerald</p>
+            <p class="mb-2">Лише цього тижня — знижка 20% на культовий роман про мрії, кохання і втрати.</p>
+            <a href="<%= book_path(Book.find_by(title: 'The Great Gatsby')) %>" class="btn btn-sm btn-outline-danger">Детальніше</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-5">
+    <div class="col-lg-10 mx-auto">
+      <div class="bg-primary text-white rounded p-4 shadow-lg text-center">
+        <h3 class="fw-bold mb-3">Підпишіться на розсилку BookStore</h3>
+        <p class="mb-4">Отримуйте персональні рекомендації, новини про акції та книжкові події першими!</p>
+        <form class="row g-2 justify-content-center">
+          <div class="col-md-6">
+            <input type="email" class="form-control form-control-lg" placeholder="Ваша e-mail адреса" required>
+          </div>
+          <div class="col-md-2">
+            <button type="submit" class="btn btn-light btn-lg w-100">Підписатися</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-5">
+    <div class="col-md-4 text-center mb-4 mb-md-0">
+      <div class="p-4 bg-white border rounded shadow-sm h-100">
+        <i class="bi bi-emoji-smile display-4 text-success mb-3"></i>
+        <h5 class="fw-bold mb-2">Подарункові сертифікати</h5>
+        <p>Подаруйте друзям і близьким можливість обрати улюблену книгу — електронні та друковані сертифікати на будь-яку суму.</p>
+      </div>
+    </div>
+    <div class="col-md-4 text-center mb-4 mb-md-0">
+      <div class="p-4 bg-white border rounded shadow-sm h-100">
+        <i class="bi bi-gem display-4 text-info mb-3"></i>
+        <h5 class="fw-bold mb-2">Бонусна програма</h5>
+        <p>Збирайте бонуси за покупки, обмінюйте на знижки та подарунки. Для постійних клієнтів — особливі привілеї!</p>
+      </div>
+    </div>
+    <div class="col-md-4 text-center">
+      <div class="p-4 bg-white border rounded shadow-sm h-100">
+        <i class="bi bi-headset display-4 text-primary mb-3"></i>
+        <h5 class="fw-bold mb-2">Підтримка 24/7</h5>
+        <p>Наші консультанти завжди готові допомогти з вибором, оформленням замовлення чи вирішенням будь-яких питань.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-8 mx-auto text-center">
+      <a href="<%= books_path %>" class="btn btn-lg btn-success px-5">Перейти до каталогу</a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,38 @@
+<h1 class="mb-4">Нова книга</h1>
+
+<div class="card shadow p-4 mb-4">
+  <%= form_with(model: [:admin, @book], class: "row g-3") do |f| %>
+    <div class="col-md-6">
+      <%= f.label :title, "Назва", class: "form-label fw-bold" %>
+      <%= f.text_field :title, class: "form-control" %>
+    </div>
+    <div class="col-md-6">
+      <%= f.label :author, "Автор", class: "form-label fw-bold" %>
+      <%= f.text_field :author, class: "form-control" %>
+    </div>
+    <div class="col-md-4">
+      <%= f.label :price, "Ціна", class: "form-label fw-bold" %>
+      <%= f.number_field :price, step: 0.01, class: "form-control" %>
+    </div>
+    <div class="col-md-4">
+      <%= f.label :category, "Категорія", class: "form-label fw-bold" %>
+      <%= f.text_field :category, class: "form-control" %>
+    </div>
+    <div class="col-md-4">
+      <%= f.label :discount, "Знижка (%)", class: "form-label fw-bold" %>
+      <%= f.number_field :discount, step: 1, min: 0, max: 100, class: "form-control" %>
+    </div>
+    <div class="col-md-8">
+      <%= f.label :cover, "Обкладинка (URL)", class: "form-label fw-bold" %>
+      <%= f.text_field :cover, class: "form-control" %>
+    </div>
+    <div class="col-12">
+      <%= f.label :description, "Опис", class: "form-label fw-bold" %>
+      <%= f.text_area :description, class: "form-control", rows: 4 %>
+    </div>
+    <div class="col-12 d-flex justify-content-between mt-3">
+      <%= f.submit "Зберегти", class: "btn btn-success px-4" %>
+      <%= link_to "Назад", admin_books_path, class: "btn btn-outline-secondary" %>
+    </div>
+  <% end %>
+</div>

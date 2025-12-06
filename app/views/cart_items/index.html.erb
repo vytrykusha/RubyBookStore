@@ -1,0 +1,52 @@
+<h1 class="mb-4">Мій кошик</h1>
+
+<% if @cart_items.any? %>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Назва</th>
+        <th>Кількість</th>
+        <th>Ціна за одиницю</th>
+        <th>Разом</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% total = 0 %>
+      <% @cart_items.each do |item| %>
+        <% price = item.book.price %>
+        <% discount = item.book.discount.to_f %>
+        <% final_price = discount > 0 ? (price * (1 - discount/100)) : price %>
+        <% subtotal = item.quantity * final_price %>
+        <% total += subtotal %>
+        <tr>
+          <td><%= item.book.title %></td>
+          <td>
+            <%= form_with url: cart_item_path(item), method: :patch, local: true, class: 'd-flex align-items-center gap-2' do |f| %>
+              <%= f.number_field :quantity, value: item.quantity, min: 1, max: 100, class: 'form-control form-control-sm', style: 'width: 80px;' %>
+              <%= f.submit '✔', class: 'btn btn-sm btn-outline-success', title: 'Оновити кількість' %>
+            <% end %>
+          </td>
+          <td>
+            <% if discount > 0 %>
+              <span class="text-decoration-line-through text-muted me-1"><%= number_to_currency(price, unit: "$") %></span>
+              <span class="fw-bold text-success"><%= number_to_currency(final_price, unit: "$") %></span>
+              <span class="badge bg-gradient-discount ms-1">-<%= discount.to_i %>%</span>
+            <% else %>
+              <%= number_to_currency(price, unit: "$") %>
+            <% end %>
+          </td>
+          <td><%= number_to_currency(subtotal, unit: "$") %></td>
+          <td><%= button_to "✕ Видалити", cart_item_path(item), method: :delete, class: "btn btn-sm btn-outline-danger" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <div class="text-end">
+  <h4>Сума: <%= number_to_currency(total, unit: "$") %></h4>
+  <%= link_to "Оформити замовлення", new_order_path, class: "btn btn-success" %>
+  </div>
+<% else %>
+  <div class="alert alert-info">Кошик порожній</div>
+<% end %>

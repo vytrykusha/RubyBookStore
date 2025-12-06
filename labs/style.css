@@ -1,0 +1,27 @@
+/* Верхні три рядки */
+.line1, .line2, .line3 {
+    padding: 10px;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+.line1 {
+    background-color: #4dabf7; 
+}
+.line2 {
+    background-color: #69db7c;
+}
+.line3 {
+    background-color: #ffd43b;
+}
+
+/* Дизайн заголовків */
+.section-title {
+    margin-top: 15px;
+    margin-bottom: 8px;
+    color: #0077b6;
+    font-weight: bold;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 4px;
+}

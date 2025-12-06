@@ -1,0 +1,35 @@
+<div class="container">
+  <h1 class="mb-4">Адмінська панель</h1>
+
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="card shadow-sm border-primary">
+        <div class="card-body text-center">
+          <h5 class="card-title">Замовлення</h5>
+          <p class="card-text display-6"><%= Order.count %></p>
+          <%= link_to "Переглянути", admin_orders_path, class: "btn btn-primary" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow-sm border-success">
+        <div class="card-body text-center">
+          <h5 class="card-title">Книги</h5>
+          <p class="card-text display-6"><%= Book.count %></p>
+          <%= link_to "Переглянути", admin_books_path, class: "btn btn-success" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow-sm border-info">
+        <div class="card-body text-center">
+          <h5 class="card-title">Користувачі</h5>
+          <p class="card-text display-6"><%= User.count %></p>
+          <%= link_to "Переглянути", admin_users_path, class: "btn btn-info" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

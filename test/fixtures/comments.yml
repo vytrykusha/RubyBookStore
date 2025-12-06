@@ -1,0 +1,9 @@
+comment_one:
+  content: "Чудова книга!"
+  author: "Гість"
+  book: book_one
+
+comment_two:
+  content: "Актуальна тема навіть сьогодні"
+  author: "User"
+  book: book_two

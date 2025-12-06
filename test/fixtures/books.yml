@@ -1,0 +1,15 @@
+book_one:
+  title: "Кобзар"
+  author: "Тарас Шевченко"
+  price: 120
+  category: "Поезія"
+  discount: 0
+  description: "Класична збірка поезій"
+
+book_two:
+  title: "1984"
+  author: "Джордж Орвелл"
+  price: 150
+  category: "Антиутопія"
+  discount: 10
+  description: "Антиутопічний роман"

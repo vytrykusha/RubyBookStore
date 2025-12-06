@@ -1,0 +1,251 @@
+/* Бейдж категорії (синьо-фіолетовий градієнт) */
+.bg-gradient-category {
+  background: linear-gradient(90deg, #4e73df 0%, #7c3aed 100%) !important;
+  color: #fff !important;
+  font-weight: 600;
+  border-radius: 0.7rem;
+  padding: 0.35em 0.9em;
+  font-size: 0.95em;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(76, 115, 223, 0.10);
+}
+/* Бейдж знижки (зелено-жовтий градієнт) */
+.bg-gradient-discount {
+  background: linear-gradient(90deg, #1cc88a 0%, #ffe259 100%) !important;
+  color: #222 !important;
+  font-weight: 700;
+  border-radius: 0.7rem;
+  padding: 0.35em 0.9em;
+  font-size: 0.95em;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(30, 200, 138, 0.10);
+}
+/* Синьо-зелена кнопка 'Додати в кошик' (основна палітра) */
+.btn-cart-main-cool {
+  background: linear-gradient(90deg, #1cc88a 0%, #4e73df 100%);
+  color: #fff;
+  border: none;
+  font-size: 1.25rem;
+  font-weight: 700;
+  border-radius: 0.9rem;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 18px rgba(76, 115, 223, 0.13);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.15s;
+}
+.btn-cart-main-cool:hover, .btn-cart-main-cool:focus {
+  background: linear-gradient(90deg, #4e73df 0%, #1cc88a 100%);
+  color: #fff;
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 8px 32px rgba(76, 115, 223, 0.18);
+}
+.btn-cart-main-cool i {
+  font-size: 1.3em;
+  vertical-align: middle;
+}
+/* Яскрава кнопка 'Додати в кошик' */
+.btn-cart-main {
+  background: linear-gradient(90deg, #ffb347 0%, #ff416c 100%);
+  color: #fff;
+  border: none;
+  font-size: 1.25rem;
+  font-weight: 700;
+  border-radius: 0.9rem;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 18px rgba(255, 65, 108, 0.13);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.15s;
+}
+.btn-cart-main:hover, .btn-cart-main:focus {
+  background: linear-gradient(90deg, #ff416c 0%, #ffb347 100%);
+  color: #fff;
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 8px 32px rgba(255, 65, 108, 0.18);
+}
+.btn-cart-main i {
+  font-size: 1.3em;
+  vertical-align: middle;
+}
+/* Фіолетова outline-кнопка для українських авторів */
+.btn-outline-purple, .btn-outline-purple:visited {
+  border: 2px solid #7c3aed;
+  color: #7c3aed;
+  background: #fff;
+}
+.btn-outline-purple:hover, .btn-outline-purple:focus {
+  background: linear-gradient(90deg, #a78bfa 0%, #7c3aed 100%);
+  color: #fff;
+  border-color: #7c3aed;
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.13);
+}
+/* --- Каталог книг: картки --- */
+.book-card-link {
+  text-decoration: none;
+  color: inherit;
+}
+.book-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  transition: box-shadow 0.2s;
+  cursor: pointer;
+}
+.book-card:hover {
+  box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+}
+.book-card-img {
+  width: 100%;
+  height: 340px;
+  object-fit: contain;
+  background: #fff;
+  display: block;
+  padding: 16px;
+  box-sizing: border-box;
+}
+.book-card-info {
+  position: absolute;
+  left: 0; right: 0; bottom: -100%;
+  background: rgba(255,255,255,0.97);
+  padding: 1rem 1rem 0.5rem 1rem;
+  border-top: 1px solid #eee;
+  box-shadow: 0 -2px 12px rgba(0,0,0,0.07);
+  transition: bottom 0.25s cubic-bezier(.4,2,.6,1);
+}
+.book-card:hover .book-card-info {
+  bottom: 0;
+}
+
+body {
+  background: linear-gradient(120deg, #f8f9fa 60%, #e3f6f5 100%);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Navbar */
+.navbar {
+  background: linear-gradient(90deg, #1cc88a 0%, #4e73df 100%);
+  box-shadow: 0 2px 12px rgba(76, 115, 223, 0.08);
+}
+.navbar-brand {
+  font-weight: bold;
+  font-size: 1.6rem;
+  color: #fff !important;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 8px rgba(30, 200, 138, 0.12);
+}
+.navbar .nav-link {
+  color: #f8f9fa !important;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  margin: 0 0.2rem;
+  transition: background 0.2s, color 0.2s;
+}
+.navbar .nav-link.active, .navbar .nav-link:hover {
+  background: rgba(255,255,255,0.18);
+  color: #fff !important;
+}
+
+/* Card */
+.card, .book-card {
+  border: none;
+  border-radius: 1.2rem;
+  box-shadow: 0 4px 18px rgba(30, 200, 138, 0.08), 0 1.5px 6px rgba(76, 115, 223, 0.07);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover, .book-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 8px 32px rgba(30, 200, 138, 0.13), 0 2px 12px rgba(76, 115, 223, 0.10);
+}
+
+/* Buttons */
+.btn, .btn-primary, .btn-success, .btn-outline-primary, .btn-outline-secondary {
+  border-radius: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(76, 115, 223, 0.07);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.btn-primary, .btn-success {
+  background: linear-gradient(90deg, #1cc88a 0%, #4e73df 100%);
+  border: none;
+  color: #fff;
+}
+.btn-primary:hover, .btn-success:hover {
+  background: linear-gradient(90deg, #4e73df 0%, #1cc88a 100%);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(76, 115, 223, 0.13);
+}
+.btn-outline-primary {
+  border: 2px solid #4e73df;
+  color: #4e73df;
+  background: #fff;
+}
+.btn-outline-primary:hover {
+  background: #4e73df;
+  color: #fff;
+}
+.btn-outline-secondary {
+  border: 2px solid #1cc88a;
+  color: #1cc88a;
+  background: #fff;
+}
+.btn-outline-secondary:hover {
+  background: #1cc88a;
+  color: #fff;
+}
+
+/* Form controls */
+.form-control, .form-select {
+  border-radius: 0.7rem;
+  border: 1.5px solid #e3f6f5;
+  box-shadow: none;
+  transition: border 0.2s;
+}
+.form-control:focus, .form-select:focus {
+  border-color: #4e73df;
+  box-shadow: 0 0 0 2px #e3f6f5;
+}
+
+/* Cards and sections */
+.card, .book-card, .shadow-sm {
+  background: #fff;
+}
+
+/* --- Пагінація (Kaminari) --- */
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.page-item {
+  border-radius: 0.6rem;
+  overflow: hidden;
+}
+.page-item.active .page-link,
+.page-item.active {
+  background: linear-gradient(90deg, #4e73df 0%, #1cc88a 100%) !important;
+  color: #fff !important;
+  border: none;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(76, 115, 223, 0.13);
+}
+.page-link {
+  color: #4e73df;
+  background: #f8f9fa;
+  border: none;
+  font-weight: 600;
+  padding: 0.6em 1.1em;
+  font-size: 1.1em;
+  transition: background 0.2s, color 0.2s;
+}
+.page-link:hover, .page-link:focus {
+  background: #e3f6f5;
+  color: #1cc88a;
+}
+.page-item.disabled .page-link {
+  color: #bbb;
+  background: #f8f9fa;
+  border: none;
+}
+/* --- Кінець стилів пагінації --- */

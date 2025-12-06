@@ -1,0 +1,12 @@
+<% provide :page_title, 'Редагування сторінки' %>
+<div class="card shadow p-4 mb-4">
+  <h2 class="mb-4">Редагування: <%= @page.slug == 'about' ? 'Про нас' : 'Головна' %></h2>
+  <%= form_with(model: [:admin, @page], local: true) do |f| %>
+    <div class="mb-3">
+      <%= f.label :content, 'Текст сторінки', class: 'form-label fw-bold' %>
+      <%= f.text_area :content, class: 'form-control', rows: 12 %>
+    </div>
+    <%= f.submit 'Зберегти', class: 'btn btn-success' %>
+    <%= link_to 'Назад', admin_editable_pages_path, class: 'btn btn-outline-secondary ms-2' %>
+  <% end %>
+</div>

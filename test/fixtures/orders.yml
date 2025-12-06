@@ -1,0 +1,8 @@
+order_one:
+  user: user_one
+  name: "Іван Іванов"
+  email: "user1@example.com"
+  address: "Київ"
+  phone: "123456789"
+  status: "new"
+  total_price: 200

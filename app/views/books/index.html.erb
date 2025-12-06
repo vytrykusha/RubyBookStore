@@ -1,0 +1,68 @@
+<h1 class="mb-4">Каталог книг</h1>
+
+<div class="card mb-4 p-3 shadow-sm">
+  <%= form_with url: books_path, method: :get, local: true, class: "row g-3 align-items-end" do |f| %>
+    <div class="col-md-4">
+      <%= f.label :q, "Пошук (назва або автор)", class: "form-label" %>
+      <%= f.text_field :q, value: params[:q], class: "form-control", placeholder: "Введіть назву або автора..." %>
+    </div>
+    <div class="col-md-2">
+      <%= f.label :min_price, "Ціна від", class: "form-label" %>
+      <%= f.number_field :min_price, value: params[:min_price], class: "form-control", step: 1, min: 0 %>
+    </div>
+    <div class="col-md-2">
+      <%= f.label :max_price, "Ціна до", class: "form-label" %>
+      <%= f.number_field :max_price, value: params[:max_price], class: "form-control", step: 1, min: 0 %>
+    </div>
+    <div class="col-md-2">
+      <%= f.label :category, "Категорія", class: "form-label" %>
+      <%= f.select :category, Book.distinct.pluck(:category).compact.reject(&:blank?).sort.map { |c| [c, c] }, {include_blank: 'Всі'}, {selected: params[:category], class: "form-select"} %>
+    </div>
+    <div class="col-md-2">
+      <%= f.label :sort, "Сортувати", class: "form-label" %>
+      <%= f.select :sort, [["За назвою (А-Я)", "title_asc"], ["За назвою (Я-А)", "title_desc"], ["За ціною (зростання)", "price_asc"], ["За ціною (спадання)", "price_desc"]], {selected: params[:sort]}, class: "form-select" %>
+    </div>
+    <div class="col-md-2 d-grid align-items-end">
+      <div class="form-check mb-2">
+        <%= f.check_box :discounted, {checked: params[:discounted].present?, class: "form-check-input"}, '1', '0' %>
+        <%= f.label :discounted, "Тільки зі знижкою", class: "form-check-label" %>
+      </div>
+      <%= f.submit "Застосувати", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>
+
+
+<div class="row">
+  <% @books.each do |book| %>
+    <div class="col-6 col-md-4 col-lg-3 mb-4">
+      <%= link_to book_path(book), class: "book-card-link" do %>
+        <div class="book-card h-100">
+          <img src="<%= book.cover %>" class="book-card-img" alt="Обкладинка">
+          <div class="book-card-info">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <div class="fw-bold"><%= book.title %></div>
+              <% if book.category.present? %>
+                <span class="badge bg-gradient-category ms-2"><%= book.category %></span>
+              <% end %>
+            </div>
+            <div class="text-muted mb-1"><%= book.author %></div>
+            <div class="d-flex align-items-center gap-2 mb-1">
+              <div class="fw-semibold text-success"><%= number_to_currency(book.price, unit: "$") %></div>
+              <% if book.discount.to_f > 0 %>
+                <span class="badge bg-gradient-discount">-<%= book.discount.to_i %>%</span>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<div class="mt-4 d-flex justify-content-center">
+  <%= paginate @books %>
+</div>
+
+<%#= require 'kaminari/helpers/action_view_extension' %>
+<%#= include Kaminari::Helpers::ActionViewExtension %>
