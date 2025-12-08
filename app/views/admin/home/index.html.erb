@@ -1,0 +1,48 @@
+<% content_for :page_title do %>
+  Адмін панель
+<% end %>
+
+<div class="container-fluid">
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <h4>Ласкаво просимо в адміністративну панель</h4>
+          <p class="text-muted">Виберіть розділ для керування системою:</p>
+          <div class="mt-3">
+            <%= link_to "Перейти до аналітики", admin_dashboard_path, class: "btn btn-primary me-2" %>
+            <%= link_to "Керувати користувачами", admin_users_path, class: "btn btn-outline-secondary me-2" %>
+            <%= link_to "Керувати книгами", admin_books_path, class: "btn btn-outline-secondary" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card text-center">
+        <div class="card-body">
+          <h6 class="card-title">Користувачів</h6>
+          <h2><%= @total_users %></h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-center">
+        <div class="card-body">
+          <h6 class="card-title">Книг</h6>
+          <h2><%= @total_books %></h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-center">
+        <div class="card-body">
+          <h6 class="card-title">Замовлень</h6>
+          <h2><%= @total_orders %></h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

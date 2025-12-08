@@ -1,0 +1,125 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">💳 Оплата замовлення</h4>
+        </div>
+        <div class="card-body">
+          <div class="mb-3">
+            <h5>Деталі замовлення</h5>
+            <table class="table table-sm">
+              <tbody>
+                <tr>
+                  <td><strong>Номер замовлення:</strong></td>
+                  <td>#<%= @order.id %></td>
+                </tr>
+                <tr>
+                  <td><strong>Прізвище:</strong></td>
+                  <td><%= @order.name %></td>
+                </tr>
+                <tr>
+                  <td><strong>Адреса доставки:</strong></td>
+                  <td><%= @order.address %></td>
+                </tr>
+                <tr>
+                  <td><strong>Спосіб доставки:</strong></td>
+                  <td><%= case @order.shipping_method
+                        when 'np' then 'Нова Пошта'
+                        when 'courier' then "Кур'єр"
+                        when 'pickup' then 'Самовивіз'
+                        else '---'
+                        end %>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Вартість доставки:</strong></td>
+                  <td><%= number_to_currency(@order.shipping_cost.to_f, unit: '₴') %></td>
+                </tr>
+                <tr>
+                  <td><strong>Телефон:</strong></td>
+                  <td><%= @order.phone %></td>
+                </tr>
+                <tr>
+                  <td><strong>Email:</strong></td>
+                  <td><%= @order.email %></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <hr>
+
+          <div class="mb-3">
+            <h5>Товари</h5>
+            <% @order.order_items.each do |item| %>
+              <div class="d-flex justify-content-between mb-2">
+                <div>
+                  <strong><%= item.book.title %></strong>
+                  <br>
+                  <small class="text-muted">
+                    <%= item.quantity %> × <%= number_to_currency(item.unit_price, unit: "₴") %>
+                  </small>
+                </div>
+                <div>
+                  <strong><%= number_to_currency(item.quantity * item.unit_price, unit: "₴") %></strong>
+                </div>
+              </div>
+            <% end %>
+          </div>
+
+          <hr>
+
+          <div class="mb-4">
+            <h4 class="text-end">
+              Сума до оплати: <span class="text-primary"><%= number_to_currency(@order.total_price, unit: "₴") %></span>
+            </h4>
+          </div>
+
+          <% if @order.payment_status != "completed" %>
+            <!-- LiqPay Payment Form -->
+            <% if @invoice %>
+              <form method="POST" action="<%= @invoice[:action] %>" class="mb-3">
+                <input type="hidden" name="data" value="<%= @invoice[:data] %>">
+                <input type="hidden" name="signature" value="<%= @invoice[:signature] %>">
+                <button type="submit" class="btn btn-success btn-lg w-100">
+                  🏦 Оплатити через LiqPay
+                </button>
+              </form>
+            <% else %>
+              <div class="alert alert-info">
+                ℹ️ LiqPay сервіс не налаштований. Встановіть LIQPAY_MERCHANT_ID та LIQPAY_PRIVATE_KEY в .env
+              </div>
+            <% end %>
+
+            <!-- Cash on delivery -->
+            <form method="POST" action="<%= pay_cash_path(@order.id) %>" class="mb-3">
+              <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+              <button type="submit" class="btn btn-outline-primary w-100">
+                💵 Оплатити готівкою при отриманні
+              </button>
+            </form>
+
+            <div class="alert alert-secondary small">
+              <strong>📝 Способи оплати:</strong>
+              <ul class="mb-0">
+                <li>🏦 LiqPay - платіж через LiqPay</li>
+                <li>💳 Готівка при отриманні - сплатите водієві</li>
+              </ul>
+            </div>
+          <% else %>
+            <div class="alert alert-success">
+              ✅ <strong>Платіж успішно оброблено!</strong>
+              <br>
+              Замовлення статус: <span class="badge bg-success"><%= @order.status %></span>
+              <br>
+              Статус платежу: <span class="badge bg-success"><%= @order.payment_status %></span>
+            </div>
+          <% end %>
+
+          <%= link_to "← Назад до замовлень", orders_path, class: "btn btn-secondary mt-3 w-100" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,5 +1,6 @@
 Book.destroy_all
-User.destroy_all
+ActivityLog.delete_all
+User.delete_all
 
 # Створюємо адміністратора
 admin = User.create!(
@@ -244,3 +245,10 @@ books.each do |attrs|
 end
 
 puts "✅ База заповнена! Створено #{Book.count} книг і #{User.count} користувачів."
+
+# Логуємо активність для тестування аналітики
+if Book.any? && User.any?
+  user1.activity_logs.create!(action: :viewed_book, resource_type: "Book", resource_id: Book.first.id, details: "Test activity")
+  user2.activity_logs.create!(action: :searched, resource_type: "Query", resource_id: 0, details: "fantasy")
+  puts "✅ Додано #{ActivityLog.count} логів активності для тестування аналітики."
+end

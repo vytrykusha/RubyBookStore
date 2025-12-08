@@ -10,7 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_09_15_123000) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_08_123000) do
+  create_table "activity_logs", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "action"
+    t.string "resource_type"
+    t.integer "resource_id"
+    t.text "details"
+    t.string "ip_address"
+    t.string "user_agent"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_activity_logs_on_user_id"
+  end
+
   create_table "books", force: :cascade do |t|
     t.string "title"
     t.string "author"
@@ -38,6 +51,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_15_123000) do
     t.integer "book_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "sentiment"
     t.index ["book_id"], name: "index_comments_on_book_id"
   end
 
@@ -68,6 +82,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_15_123000) do
     t.string "email"
     t.string "address"
     t.string "phone"
+    t.string "payment_status"
+    t.string "shipping_method"
+    t.decimal "shipping_cost", precision: 10, scale: 2, default: "0.0"
   end
 
   create_table "users", force: :cascade do |t|
@@ -83,5 +100,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_15_123000) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "activity_logs", "users"
   add_foreign_key "comments", "books"
 end

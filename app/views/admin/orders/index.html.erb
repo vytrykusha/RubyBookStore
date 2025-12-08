@@ -24,7 +24,7 @@
         </td>
         <td>    
           <% final_sum = order.total_price.to_f > 0 ? order.total_price : order.calculate_total %>
-          <%= number_to_currency(final_sum, unit: "$") %>
+          <%= number_to_currency(final_sum, unit: "₴") %>
         </td>
         <td>
           <span class="badge 

@@ -4,13 +4,31 @@ Rails.application.routes.draw do
     resources :comments, only: [ :create, :destroy ]
   end
   resources :cart_items, only: [ :index, :create, :update, :destroy ]
-  resources :orders, only: [ :index, :create, :new ]
+  resources :orders, only: [ :index, :create, :new, :show ]
+
+  # Chat routes
+  get "chat", to: "chat#index"
+  post "chat/send_message"
+  post "chat/clear"
+
+  # Dashboard routes
+  get "dashboard/analytics", to: "dashboard#analytics"
+  get "dashboard/api_analytics", to: "dashboard#api_analytics"
+
+  # Payment routes
+  post "payments/liqpay/notify", to: "payments#liqpay_notify"
+  get "payments/status/:order_id", to: "payments#status", as: :payment_status
+  post "payments/mark_payment/:order_id", to: "payments#mark_payment", as: :mark_payment
+  get "payments/mark_payment/:order_id", to: "payments#mark_payment"
+  post "payments/cash/:order_id", to: "payments#pay_cash", as: :pay_cash
 
   namespace :admin do
     resources :books
     resources :orders
     resources :users
-    root "books#index"
+    resources :comments, only: [ :index, :destroy ]
+    get "dashboard", to: "dashboard#index", as: :dashboard
+    root "home#index"
   end
       get "about", to: "pages#about", as: :about
 

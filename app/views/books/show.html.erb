@@ -50,10 +50,20 @@
     <div class="list-group mb-4">
       <% @book.comments.each do |comment| %>
         <div class="list-group-item">
-          <div class="d-flex justify-content-between align-items-center">
-            <div>
-              <strong><%= comment.author.presence || 'Гість' %>:</strong>
-              <%= comment.content %>
+          <div class="d-flex justify-content-between align-items-start">
+            <div class="flex-grow-1">
+              <div class="d-flex align-items-center gap-2 mb-2">
+                <strong><%= comment.author.presence || 'Гість' %>:</strong>
+                <% case comment.sentiment %>
+                <% when 'positive' %>
+                  <span class="badge bg-success" title="Позитивний коментар">😊 Позитивний</span>
+                <% when 'negative' %>
+                  <span class="badge bg-danger" title="Негативний коментар">😞 Негативний</span>
+                <% else %>
+                  <span class="badge bg-secondary" title="Нейтральний коментар">😐 Нейтральний</span>
+                <% end %>
+              </div>
+              <p class="mb-0"><%= comment.content %></p>
             </div>
             <div>
               <%= link_to '✕', [@book, comment], method: :delete, data: { confirm: 'Видалити коментар?' }, class: 'btn btn-sm btn-outline-danger' %>

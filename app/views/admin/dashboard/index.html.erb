@@ -1,35 +1,222 @@
-<div class="container">
-  <h1 class="mb-4">Адмінська панель</h1>
+<div class="container-fluid mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>📊 Аналітика</h1>
+    <%= link_to "← Назад до адміну", admin_root_path, class: "btn btn-secondary" %>
+  </div>
 
-  <div class="row g-4">
-    <div class="col-md-4">
-      <div class="card shadow-sm border-primary">
-        <div class="card-body text-center">
-          <h5 class="card-title">Замовлення</h5>
-          <p class="card-text display-6"><%= Order.count %></p>
-          <%= link_to "Переглянути", admin_orders_path, class: "btn btn-primary" %>
+  <!-- KPI Cards -->
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card bg-primary text-white">
+        <div class="card-body">
+          <h5>Всього користувачів</h5>
+          <h2><%= @total_users %></h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-success text-white">
+        <div class="card-body">
+          <h5>Всього замовлень</h5>
+          <h2><%= @total_orders %></h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-info text-white">
+        <div class="card-body">
+          <h5>Дохід</h5>
+          <h2>₴<%= @total_revenue.round(2) %></h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-warning text-dark">
+        <div class="card-body">
+          <h5>Замовлень сьогодні</h5>
+          <h2><%= @today_orders %></h2>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="row">
+    <!-- Daily Activity Chart -->
+    <div class="col-md-6">
+      <div class="card mb-3">
+        <div class="card-header">
+          <h5 class="mb-0">📈 Активність користувачів (7 днів)</h5>
+        </div>
+        <div class="card-body">
+          <canvas id="activityChart"></canvas>
         </div>
       </div>
     </div>
 
-    <div class="col-md-4">
-      <div class="card shadow-sm border-success">
-        <div class="card-body text-center">
-          <h5 class="card-title">Книги</h5>
-          <p class="card-text display-6"><%= Book.count %></p>
-          <%= link_to "Переглянути", admin_books_path, class: "btn btn-success" %>
+    <!-- Orders Trend -->
+    <div class="col-md-6">
+      <div class="card mb-3">
+        <div class="card-header">
+          <h5 class="mb-0">📦 Замовлення (7 днів)</h5>
+        </div>
+        <div class="card-body">
+          <canvas id="ordersChart"></canvas>
         </div>
       </div>
     </div>
 
-    <div class="col-md-4">
-      <div class="card shadow-sm border-info">
-        <div class="card-body text-center">
-          <h5 class="card-title">Користувачі</h5>
-          <p class="card-text display-6"><%= User.count %></p>
-          <%= link_to "Переглянути", admin_users_path, class: "btn btn-info" %>
+    <!-- Activity by Type -->
+    <div class="col-md-6">
+      <div class="card mb-3">
+        <div class="card-header">
+          <h5 class="mb-0">🎯 Активність за типами</h5>
+        </div>
+        <div class="card-body">
+          <canvas id="activityTypeChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Revenue Trend -->
+    <div class="col-md-6">
+      <div class="card mb-3">
+        <div class="card-header">
+          <h5 class="mb-0">💰 Дохід (7 днів)</h5>
+        </div>
+        <div class="card-body">
+          <canvas id="revenueChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Popular Books -->
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">⭐ Популярні книги</h5>
+        </div>
+        <div class="card-body">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Книга</th>
+                <th>Автор</th>
+                <th>Коментарів</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @popular_books.each do |book| %>
+                <tr>
+                  <td><strong><%= book.title %></strong></td>
+                  <td><%= book.author %></td>
+                  <td><span class="badge bg-primary"><%= book.comments_count %></span></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<div id="chart-data"
+     data-activity="<%= @daily_activity.to_json %>"
+     data-orders="<%= @orders_by_day.to_json %>"
+     data-types="<%= @activity_by_type.to_json %>"
+     data-revenue="<%= @revenue_by_day.to_json %>">
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  const dataBlock = document.getElementById('chart-data');
+
+  const activityData = JSON.parse(dataBlock.dataset.activity);
+  const ordersData   = JSON.parse(dataBlock.dataset.orders);
+  const typeData     = JSON.parse(dataBlock.dataset.types);
+  const revenueData  = JSON.parse(dataBlock.dataset.revenue);
+
+  // --- Activity Chart ---
+  if (activityData.length > 0) {
+    new Chart(document.getElementById('activityChart'), {
+      type: 'line',
+      data: {
+        labels: activityData.map(d => d.date),
+        datasets: [{
+          label: 'Активність',
+          data: activityData.map(d => d.count),
+          borderColor: '#007bff',
+          backgroundColor: 'rgba(0, 123, 255, 0.1)',
+          fill: true,
+          tension: 0.4
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } }
+      }
+    });
+  }
+
+  // --- Orders Chart ---
+  if (ordersData.length > 0) {
+    new Chart(document.getElementById('ordersChart'), {
+      type: 'bar',
+      data: {
+        labels: ordersData.map(d => d.date),
+        datasets: [{
+          label: 'Замовлення',
+          data: ordersData.map(d => d.count),
+          backgroundColor: '#28a745'
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } }
+      }
+    });
+  }
+
+  // --- Activity Type Chart ---
+  if (Object.keys(typeData).length > 0) {
+    new Chart(document.getElementById('activityTypeChart'), {
+      type: 'doughnut',
+      data: {
+        labels: Object.keys(typeData),
+        datasets: [{
+          data: Object.values(typeData),
+          backgroundColor: ['#007bff', '#28a745', '#ffc107', '#dc3545', '#17a2b8']
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false }
+    });
+  }
+
+  // --- Revenue Chart ---
+  if (revenueData.length > 0) {
+    new Chart(document.getElementById('revenueChart'), {
+      type: 'bar',
+      data: {
+        labels: revenueData.map(d => d.date),
+        datasets: [{
+          label: 'Дохід (₴)',
+          data: revenueData.map(d => d.revenue),
+          backgroundColor: '#17a2b8'
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } }
+      }
+    });
+  }
+
+});
+</script>

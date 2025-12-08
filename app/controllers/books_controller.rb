@@ -50,6 +50,11 @@ class BooksController < ApplicationController
 
   # GET /books/1 or /books/1.json
   def show
+    # Логуємо перегляд книги
+    if user_signed_in?
+      ActivityLog.log_action(current_user, :viewed_book, "Book", @book.id,
+        { title: @book.title, category: @book.category }, request)
+    end
   end
 
   # GET /books/new

@@ -3,8 +3,9 @@ class CommentsController < ApplicationController
 
   def create
     @comment = @book.comments.build(comment_params)
+
     if @comment.save
-      redirect_to @book, notice: "Коментар додано."
+      redirect_to @book, notice: "Коментар додано та проаналізовано!"
     else
       redirect_to @book, alert: "Помилка при додаванні коментаря."
     end

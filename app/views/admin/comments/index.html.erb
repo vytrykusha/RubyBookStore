@@ -1,0 +1,70 @@
+<h1 class="mb-4">📝 Управління коментарями</h1>
+
+<div class="card shadow p-3 mb-4">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="text-center">
+        <h4><%= Comment.where(sentiment: 'positive').count %></h4>
+        <p class="text-success fw-bold">😊 Позитивні</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="text-center">
+        <h4><%= Comment.where(sentiment: 'negative').count %></h4>
+        <p class="text-danger fw-bold">😞 Негативні</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="text-center">
+        <h4><%= Comment.where(sentiment: 'neutral').count %></h4>
+        <p class="text-secondary fw-bold">😐 Нейтральні</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<table class="table table-hover shadow-sm">
+  <thead class="table-light">
+    <tr>
+      <th>ID</th>
+      <th>Книга</th>
+      <th>Текст коментаря</th>
+      <th>Автор</th>
+      <th>Тональність</th>
+      <th>Дата</th>
+      <th>Дії</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @comments.each do |comment| %>
+      <tr>
+        <td><%= comment.id %></td>
+        <td><%= link_to comment.book.title, admin_book_path(comment.book) %></td>
+        <td>
+          <span title="<%= comment.content %>">
+            <%= truncate(comment.content, length: 50) %>
+          </span>
+        </td>
+        <td><%= comment.author.presence || 'Гість' %></td>
+        <td>
+          <% case comment.sentiment %>
+          <% when 'positive' %>
+            <span class="badge bg-success">😊 Позитивний</span>
+          <% when 'negative' %>
+            <span class="badge bg-danger">😞 Негативний</span>
+          <% else %>
+            <span class="badge bg-secondary">😐 Нейтральний</span>
+          <% end %>
+        </td>
+        <td><%= comment.created_at.strftime("%d.%m.%Y %H:%M") %></td>
+        <td>
+          <%= button_to "🗑️ Видалити", admin_comment_path(comment), method: :delete, data: { confirm: "Видалити коментар?" }, class: "btn btn-sm btn-outline-danger" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<% if @comments.empty? %>
+  <div class="alert alert-info">Коментарів ще немає.</div>
+<% end %>

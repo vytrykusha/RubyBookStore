@@ -18,7 +18,7 @@
                   <li class="list-group-item d-flex justify-content-between align-items-center">
                     <span><%= item.book.present? ? item.book.title : '[Книга видалена]' %></span>
                     <span class="badge bg-secondary"><%= item.quantity %> шт</span>
-                    <span class="fw-bold text-success" title="Ціна за одну книгу"><%= number_to_currency(item.unit_price, unit: '$') %> за шт.</span>
+                    <span class="fw-bold text-success" title="Ціна за одну книгу"><%= number_to_currency(item.unit_price, unit: '₴') %> за шт.</span>
                   </li>
                 <% end %>
               </ul>
@@ -26,7 +26,7 @@
                 <span class="fw-bold">Загальна сума:</span>
                 <span class="fs-5 text-primary fw-bold">
                   <% final_sum = order.total_price.to_f > 0 ? order.total_price : order.calculate_total %>
-                  <%= number_to_currency(final_sum, unit: '$') %>
+                  <%= number_to_currency(final_sum, unit: '₴') %>
                 </span>
               </div>
             </div>

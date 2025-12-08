@@ -16,6 +16,11 @@
         <%= f.text_field :address, class: "form-control", required: true %>
       </div>
       <div class="mb-3">
+        <%= f.label :shipping_method, "Спосіб доставки", class: "form-label" %>
+        <%= f.select :shipping_method, options_for_select([["Нова Пошта (50₴)", "np"], ["Кур'єр (100₴)", "courier"], ["Самовивіз (0₴)", "pickup"]]), {}, class: "form-select", id: "shippingSelect" %>
+        <small class="text-muted">Вартість доставки буде додана до суми при оформленні.</small>
+      </div>
+      <div class="mb-3">
         <%= f.label :phone, "Телефон", class: "form-label" %>
         <%= f.telephone_field :phone, class: "form-control", required: true %>
       </div>
@@ -38,29 +43,54 @@
       <tbody>
         <% total = 0 %>
         <% @cart_items.each do |item| %>
-          <% price = item.book.price %>
-          <% discount = item.book.discount.to_f %>
-          <% final_price = discount > 0 ? (price * (1 - discount/100)) : price %>
-          <% subtotal = item.quantity * final_price %>
-          <% total += subtotal %>
+            <% price = item.book.price %>
+            <% discount = item.book.discount.to_f %>
+            <% final_price_usd = discount > 0 ? (price * (1 - discount/100)) : price %>
+            <% final_price = CurrencyConverter.usd_to_uah(final_price_usd) %>
+            <% subtotal = item.quantity * final_price %>
+            <% total += subtotal %>
           <tr>
             <td><%= item.book.title %></td>
             <td><%= item.quantity %></td>
             <td>
-              <% if discount > 0 %>
-                <span class="text-decoration-line-through text-muted me-1"><%= number_to_currency(price, unit: "$") %></span>
-                <span class="fw-bold text-success"><%= number_to_currency(final_price, unit: "$") %></span>
+                <% if discount > 0 %>
+                  <span class="text-decoration-line-through text-muted me-1"><%= number_to_currency(CurrencyConverter.usd_to_uah(price), unit: "₴") %></span>
+                  <span class="fw-bold text-success"><%= number_to_currency(final_price, unit: "₴") %></span>
                 <span class="badge bg-gradient-discount ms-1">-<%= discount.to_i %>%</span>
               <% else %>
-                <%= number_to_currency(price, unit: "$") %>
+                  <%= number_to_currency(final_price, unit: "₴") %>
               <% end %>
             </td>
           </tr>
         <% end %>
       </tbody>
     </table>
-    <div class="text-end">
-      <h5>Сума: <%= number_to_currency(total, unit: "$") %></h5>
+      <div class="text-end">
+        <h5>Сума: <span id="summaryTotal"><%= number_to_currency(total, unit: "₴") %></span></h5>
+        <input type="hidden" id="cartTotal" value="<%= total %>">
     </div>
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const shippingSelect = document.getElementById('shippingSelect');
+    const summaryTotal = document.getElementById('summaryTotal');
+    const cartTotal = parseFloat(document.getElementById('cartTotal').value || 0);
+
+    function getShippingCost(key) {
+      if (key === 'np') return 50.0;
+      if (key === 'courier') return 100.0;
+      return 0.0;
+    }
+
+    function updateTotal() {
+      const cost = getShippingCost(shippingSelect.value);
+      const total = cartTotal + cost;
+      summaryTotal.innerText = total.toFixed(2) + ' ₴';
+    }
+
+    shippingSelect.addEventListener('change', updateTotal);
+    updateTotal();
+  });
+</script>

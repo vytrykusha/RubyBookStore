@@ -1,0 +1,150 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">💬 Книжковий Помічник</h4>
+          <small>Розповідайте про своє улюблене читання - я допоможу вам знайти нові книги!</small>
+        </div>
+        
+        <div class="card-body" id="chat-messages" style="height: 400px; overflow-y: auto; background-color: #f8f9fa;">
+          <!-- Початкове повідомлення -->
+          <div class="mb-3">
+            <div class="alert alert-info" role="alert">
+              👋 Привіт! Я книжковий помічник. Запитайте мене про книги!
+            </div>
+          </div>
+          
+          <!-- Будуть додатися динамічно -->
+        </div>
+        
+        <div class="card-footer">
+          <form id="chat-form" onsubmit="sendMessage(event)">
+            <div class="input-group">
+              <input 
+                type="text" 
+                class="form-control" 
+                id="message-input" 
+                placeholder="Напишіть своє питання..." 
+                autocomplete="off"
+              >
+              <button class="btn btn-primary" type="submit">Надіслати</button>
+              <button class="btn btn-outline-secondary" type="button" onclick="clearChat()">Очистити</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let messageCount = 0;
+
+function sendMessage(event) {
+  event.preventDefault();
+  
+  const input = document.getElementById('message-input');
+  const message = input.value.trim();
+  
+  if (!message) return;
+  
+  // Додаємо повідомлення користувача
+  addMessage('user', message);
+  input.value = '';
+  input.focus();
+  
+  // Надсилаємо запит
+  fetch('/chat/send_message', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+    },
+    body: JSON.stringify({ message: message })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.error) {
+      addMessage('bot', data.error, 'error');
+    } else {
+      addMessage('bot', data.message, data.type);
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    addMessage('bot', 'Вибачте, сталась помилка. Спробуйте пізніше.', 'error');
+  });
+}
+
+function addMessage(role, content, type = 'local') {
+  const container = document.getElementById('chat-messages');
+  messageCount++;
+  
+  const messageDiv = document.createElement('div');
+  messageDiv.className = 'mb-3';
+  
+  if (role === 'user') {
+    messageDiv.innerHTML = `
+      <div class="text-end">
+        <span class="badge bg-primary p-2" style="max-width: 70%; word-wrap: break-word;">
+          ${escapeHtml(content)}
+        </span>
+      </div>
+    `;
+  } else {
+    const badgeClass = type === 'error' ? 'bg-danger' : (type === 'api' ? 'bg-success' : 'bg-secondary');
+    const typeLabel = type === 'api' ? '🤖 AI' : (type === 'error' ? '❌' : '💭');
+    
+    messageDiv.innerHTML = `
+      <div class="text-start">
+        <div style="display: inline-block; background-color: #e9ecef; border-radius: 10px; padding: 10px 15px; max-width: 70%;">
+          <small class="d-block text-muted mb-1">${typeLabel} ${type === 'error' ? 'Помилка' : (type === 'api' ? 'AI Відповідь' : 'Локальна відповідь')}</small>
+          <span>${escapeHtml(content)}</span>
+        </div>
+      </div>
+    `;
+  }
+  
+  container.appendChild(messageDiv);
+  container.scrollTop = container.scrollHeight;
+}
+
+function clearChat() {
+  if (confirm('Очистити історію чату?')) {
+    fetch('/chat/clear', {
+      method: 'POST',
+      headers: {
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+      }
+    })
+    .then(() => {
+      document.getElementById('chat-messages').innerHTML = `
+        <div class="mb-3">
+          <div class="alert alert-info" role="alert">
+            👋 Привіт! Я книжковий помічник. Запитайте мене про книги!
+          </div>
+        </div>
+      `;
+      messageCount = 0;
+    });
+  }
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+</script>
+
+<style>
+#chat-messages {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.card {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+</style>

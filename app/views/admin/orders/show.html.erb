@@ -21,7 +21,7 @@
   </p>
   <p><strong>Сума:</strong> 
     <% final_sum = @order.total_price.to_f > 0 ? @order.total_price : @order.calculate_total %>
-    <%= number_to_currency(final_sum, unit: "$") %>
+      <%= number_to_currency(final_sum, unit: "₴") %>
   </p>
   <p><strong>Створено:</strong> <%= @order.created_at.strftime("%d.%m.%Y %H:%M") %></p>
 </div>
@@ -47,8 +47,8 @@
           <% end %>
         </td>
         <td><%= item.quantity %> шт</td>
-        <td><%= number_to_currency(item.unit_price, unit: "$") %></td>
-        <td class="fw-bold"><%= number_to_currency(item.unit_price * item.quantity, unit: "$") %></td>
+        <td><%= number_to_currency(item.unit_price, unit: "₴") %></td>
+        <td class="fw-bold"><%= number_to_currency(item.unit_price * item.quantity, unit: "₴") %></td>
       </tr>
     <% end %>
   </tbody>
