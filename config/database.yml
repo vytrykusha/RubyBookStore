@@ -23,9 +23,13 @@ test:
 # Production uses PostgreSQL via DATABASE_URL on Render
 # Falls back to SQLite if DATABASE_URL not set
 production:
-  <<: *default
   <% if ENV['DATABASE_URL'].present? %>
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
   url: <%= ENV['DATABASE_URL'] %>
   <% else %>
+  <<: *default
   database: db/production.sqlite3
   <% end %>
