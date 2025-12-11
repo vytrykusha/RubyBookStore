@@ -2,7 +2,7 @@ services:
   - type: web
     name: bookstore
     runtime: ruby
-    buildCommand: "bundle install --without development:test && bundle exec rails assets:precompile && bundle exec rails db:migrate"
+    buildCommand: "bundle install --without development:test && bundle exec rails assets:precompile"
     startCommand: "bundle exec rails server -b 0.0.0.0 -p $PORT"
     envVars:
       - key: RAILS_ENV
