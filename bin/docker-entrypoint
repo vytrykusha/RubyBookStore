@@ -11,6 +11,9 @@ if [ "$1" = "./bin/rails" ] && [ "$2" = "server" ]; then
   echo "==> Preparing database..."
   ./bin/rails db:prepare
   echo "==> Database ready"
+
+  echo "==> Precompiling assets..."
+  ./bin/rails assets:precompile
 fi
 
 exec "$@"
