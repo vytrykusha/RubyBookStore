@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "rails", "~> 7.2.1", ">= 7.2.1.2"
+gem "rails", "~> 8.1.1"
 gem "sprockets-rails"
 gem "sqlite3", ">= 1.4", platforms: [ :ruby ]
 gem "pg", "~> 1.1", platforms: [ :ruby ] # PostgreSQL for production
