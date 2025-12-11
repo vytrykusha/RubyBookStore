@@ -1,8 +1,9 @@
+# test/fixtures/activity_logs.yml
 one:
   user: user_one
   action: viewed_book
   resource_type: Book
-  resource_id: 1
+  resource_id: <%= ActiveRecord::FixtureSet.identify(:book_one) %>
   details: "Перегляд книги"
   ip_address: "127.0.0.1"
   user_agent: "RSpec"
@@ -11,7 +12,7 @@ two:
   user: user_two
   action: searched
   resource_type: Book
-  resource_id: 2
+  resource_id: <%= ActiveRecord::FixtureSet.identify(:book_two) %>
   details: "Пошук книги"
   ip_address: "127.0.0.1"
   user_agent: "RSpec"

@@ -1,3 +1,4 @@
+# test/fixtures/comments.yml
 comment_one:
   content: "Чудова книга!"
   author: "Гість"

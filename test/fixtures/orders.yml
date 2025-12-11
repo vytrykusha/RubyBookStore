@@ -1,3 +1,4 @@
+# test/fixtures/orders.yml
 order_one:
   user: user_one
   name: "Іван Іванов"
@@ -5,4 +6,7 @@ order_one:
   address: "Київ"
   phone: "123456789"
   status: "new"
-  total_price: 200
+  total_price: 250
+  shipping_method: "np"
+  shipping_cost: 50.0
+  payment_status: "pending"

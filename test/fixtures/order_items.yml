@@ -1,9 +1,12 @@
-comment_one:
-  content: "Чудова книга!"
-  author: "Гість"
+# test/fixtures/comments.yml
+order_item_one:
+  order: order_one
   book: book_one
+  quantity: 1
+  unit_price: 120
 
-comment_two:
-  content: "Актуальна тема навіть сьогодні"
-  author: "User"
+order_item_two:
+  order: order_one
   book: book_two
+  quantity: 2
+  unit_price: 150

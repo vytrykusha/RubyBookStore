@@ -1,3 +1,4 @@
+# test/fixtures/books.yml
 book_one:
   title: "Кобзар"
   author: "Тарас Шевченко"

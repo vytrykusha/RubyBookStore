@@ -1,3 +1,4 @@
+# test/fixtures/users.yml
 admin:
   email: admin@example.com
   encrypted_password: <%= Devise::Encryptor.digest(User, "password") %>

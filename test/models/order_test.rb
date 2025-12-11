@@ -7,7 +7,10 @@ class OrderTest < ActiveSupport::TestCase
       name: "Іван Іванов",
       email: "test@example.com",
       address: "Київ",
-      phone: "123456789"
+      phone: "123456789",
+      total_price: 200.0,
+      shipping_method: "np",
+      shipping_cost: 50.0
     )
     @order.save!
     @order.order_items.create!(book: Book.create!(title: "Book1", author: "A", price: 100), quantity: 2, unit_price: 100)
