@@ -52,4 +52,3 @@
 /config/secrets.yml.enc
 .env.example
 .env.*
-app/services/sentiment_analyzer.rb

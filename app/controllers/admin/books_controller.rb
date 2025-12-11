@@ -6,9 +6,6 @@ class Admin::BooksController < ApplicationController
   def show
     @book = Book.find(params[:id])
   end
-  layout "admin"
-  before_action :authenticate_user!
-  before_action :require_admin
 
   def index
     @books = Book.all

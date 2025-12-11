@@ -15,7 +15,7 @@ end
 
 class LiqPayService
   MERCHANT_ID = ENV["LIQPAY_MERCHANT_ID"].present? ? ENV["LIQPAY_MERCHANT_ID"] : "sandbox_i97330390448"
-  PRIVATE_KEY = ENV["LIQPAY_PRIVATE_KEY"].present? ? ENV["LIQPAY_PRIVATE_KEY"] : "sandbox_cjll7ueDDlfpmGKcYpaPr3d5AFZmLFVlPEAm5b8z"
+  PRIVATE_KEY = ENV["LIQPAY_PRIVATE_KEY"].present? ? ENV["LIQPAY_PRIVATE_KEY"] : "test_private_key"
   API_URL = "https://www.liqpay.ua/api/checkout"
 
   def self.create_invoice(order)
