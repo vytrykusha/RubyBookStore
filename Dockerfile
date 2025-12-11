@@ -29,14 +29,10 @@ FROM base AS build
 
 # Install application gems
 COPY Gemfile Gemfile.lock ./
-RUN bundle install --no-cache && \
-    bundle binstubs bundler --force
+RUN bundle install --no-cache --without development:test
 
 # Copy application code
 COPY . .
-
-# Precompiling assets for production without requiring secret RAILS_MASTER_KEY
-RUN SKIP_BOOTSNAP=1 bundle exec rails assets:precompile 2>&1 || true
 
 # Adjust binfiles to be executable on Linux
 RUN chmod +x bin/* && \
