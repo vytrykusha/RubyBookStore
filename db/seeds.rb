@@ -1,6 +1,15 @@
-Book.destroy_all
-ActivityLog.delete_all
-User.delete_all
+if defined?(Book) && Book.table_exists?
+  Book.destroy_all
+end
+
+if defined?(ActivityLog) && ActivityLog.table_exists?
+  ActivityLog.destroy_all
+end
+
+if defined?(User) && User.table_exists?
+  User.destroy_all
+end
+
 
 # Створюємо адміністратора
 admin = User.create!(
