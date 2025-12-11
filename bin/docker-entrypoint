@@ -6,14 +6,14 @@ if [ -z "${LD_PRELOAD+x}" ] && ls /usr/lib/*/libjemalloc.so.2 > /dev/null 2>&1; 
   export LD_PRELOAD="$(echo /usr/lib/*/libjemalloc.so.2)"
 fi
 
-# Run migrations only when starting the Rails server
 if [ "$1" = "./bin/rails" ] && [ "$2" = "server" ]; then
   echo "==> Preparing database..."
   ./bin/rails db:prepare
-  echo "==> Database ready"
 
   echo "==> Precompiling assets..."
-  ./bin/rails assets:precompile
+  bundle exec rails assets:precompile
+
+  echo "==> Database and assets ready"
 fi
 
 exec "$@"

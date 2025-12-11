@@ -34,8 +34,6 @@ RUN bundle install --no-cache --without development:test
 # Copy application code
 COPY . .
 
-RUN bundle exec rails assets:precompile
-
 # Adjust binfiles to be executable on Linux
 RUN chmod +x bin/* && \
     sed -i "s/\r$//g" bin/* && \
