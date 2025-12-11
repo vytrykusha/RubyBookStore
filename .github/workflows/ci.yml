@@ -89,7 +89,7 @@ jobs:
           bundle exec rails test
 
       - name: Upload screenshots (if any)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: failure()
         with:
           name: screenshots
