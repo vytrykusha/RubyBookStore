@@ -13,6 +13,7 @@ gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "bootstrap", "~> 5.3.2"
 gem "sassc-rails"
 gem "kaminari"
+gem "bootsnap", require: false
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
