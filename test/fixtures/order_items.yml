@@ -1,5 +1,9 @@
-order_item_one:
-  order: order_one
+comment_one:
+  content: "Чудова книга!"
+  author: "Гість"
+  book: book_one
+
+comment_two:
+  content: "Актуальна тема навіть сьогодні"
+  author: "User"
   book: book_two
-  quantity: 2
-  unit_price: 100

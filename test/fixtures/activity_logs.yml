@@ -1,19 +1,17 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
-  user: one
-  action: MyString
-  resource_type: MyString
+  user: user_one
+  action: viewed_book
+  resource_type: Book
   resource_id: 1
-  details: MyText
-  ip_address: MyString
-  user_agent: MyString
+  details: "Перегляд книги"
+  ip_address: "127.0.0.1"
+  user_agent: "RSpec"
 
 two:
-  user: two
-  action: MyString
-  resource_type: MyString
-  resource_id: 1
-  details: MyText
-  ip_address: MyString
-  user_agent: MyString
+  user: user_two
+  action: searched
+  resource_type: Book
+  resource_id: 2
+  details: "Пошук книги"
+  ip_address: "127.0.0.1"
+  user_agent: "RSpec"
