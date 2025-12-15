@@ -27,7 +27,6 @@ group :development, :test do
   gem "rswag-api"
   gem "rswag-ui"
   gem "rswag-specs"
-
 end
 
 group :development do
@@ -35,7 +34,6 @@ group :development do
   gem "web-console"
   gem "rswag"
   gem "sqlite3", ">= 1.4"
-
 end
 
 group :test do

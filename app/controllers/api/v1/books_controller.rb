@@ -5,7 +5,7 @@ module Api
 
       def index
         books = Book.all
-        render json: books.as_json(only: [:id, :title, :author, :price])
+        render json: books.as_json(only: [ :id, :title, :author, :price ])
       end
 
       def create
