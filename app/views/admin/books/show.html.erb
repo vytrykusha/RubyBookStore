@@ -27,9 +27,13 @@
       <% if @book.respond_to?(:description) && @book.description.present? %>
         <p class="mb-2"><strong>Опис:</strong> <%= @book.description %></p>
       <% end %>
-      <div class="mt-4">
+      <div class="mt-4 d-flex">
         <%= link_to "Редагувати", edit_admin_book_path(@book), class: "btn btn-outline-primary me-2" %>
-        <%= link_to "Видалити", admin_book_path(@book), method: :delete, data: { confirm: "Ви впевнені?" }, class: "btn btn-outline-danger" %>
+        <%= button_to "Видалити",
+            admin_book_path(@book),
+            method: :delete,
+            data: { turbo_confirm: "Ви впевнені?" },
+            class: "btn btn-outline-danger" %>
         <%= link_to "⬅ До списку книг", admin_books_path, class: "btn btn-outline-secondary ms-2" %>
       </div>
     </div>
